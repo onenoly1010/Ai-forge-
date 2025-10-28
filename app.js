@@ -1,15 +1,47 @@
 // Pi SDK Integration
 const Pi = window.Pi;
 
-// Initialize Pi SDK
+// Initialize Pi SDK with proper error handling
 if (Pi) {
-    Pi.init({ version: "2.0" });
+    Pi.init({ version: "2.0" })
+        .then(() => {
+            console.log("✅ Pi SDK initialized successfully!");
+            // Visual feedback - change button to green when ready
+            const loginBtn = document.getElementById('login-btn');
+            if (loginBtn) {
+                loginBtn.style.backgroundColor = '#4CAF50';
+                loginBtn.textContent = 'Connect Pi Wallet (Ready)';
+            }
+        })
+        .catch(error => {
+            console.error("❌ Pi SDK initialization failed:", error);
+            const loginBtn = document.getElementById('login-btn');
+            if (loginBtn) {
+                loginBtn.style.backgroundColor = '#ff4444';
+                loginBtn.textContent = 'SDK Error - Refresh Page';
+            }
+        });
+} else {
+    console.error("❌ Pi SDK not found - check script loading");
+    const loginBtn = document.getElementById('login-btn');
+    if (loginBtn) {
+        loginBtn.style.backgroundColor = '#ff9800';
+        loginBtn.textContent = 'SDK Missing - Use Pi Browser';
+    }
 }
 
 let currentUser = null;
 
 document.getElementById('login-btn').addEventListener('click', async () => {
     try {
+        // Double-check Pi SDK availability
+        if (!window.Pi) {
+            alert("❌ Pi SDK not loaded. Please use Pi Browser and refresh the page.");
+            return;
+        }
+        
+        console.log("🔄 Starting authentication...");
+        
         // Authenticate with Pi Network
         const scopes = ['username', 'payments'];
         currentUser = await Pi.authenticate(scopes, onIncompletePaymentFound);
@@ -18,11 +50,12 @@ document.getElementById('login-btn').addEventListener('click', async () => {
         document.getElementById('auth-section').classList.add('hidden');
         document.getElementById('app-section').classList.remove('hidden');
         
-        console.log('User authenticated:', currentUser);
+        console.log('✅ User authenticated:', currentUser);
+        alert('✅ Successfully connected to Pi Wallet!');
         
     } catch (error) {
-        console.error('Authentication failed:', error);
-        alert('Authentication failed. Please try again.');
+        console.error('❌ Authentication failed:', error);
+        alert('❌ Authentication failed: ' + (error.message || 'Unknown error - try refreshing'));
     }
 });
 
