@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>PiForge</title>
+    <link rel="manifest" href="data:application/manifest+json;base64,[base64-encoded manifest below]">
+    <style>
+        body { font-family: -apple-system, sans-serif; background: linear-gradient(red, yellow); color: white; text-align: center; margin: 0; padding: 20px; touch-action: manipulation; }
+        #iframe-container { width: 100%; height: 70vh; border: none; }
+        #status { margin: 10px; padding: 15px; background: rgba(0,0,0,0.5); border-radius: 10px; font-size: 16px; }
+        button { background: #ff6b35; color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-size: 18px; min-height: 50px; width: 90%; margin: 10px auto; display: block; }
+        @media (max-width: 414px) { button { font-size: 20px; padding: 20px; } } /* iPhone boost */
+    </style>
+</head>
+<body>
+    <h1>🔨 PiForge V1.2</h1>
+    <p>Ethical Audit for Pi</p>
+    <div id="status">Tap to Start</div>
+    <button id="auth-btn">🔗 Entangle & Mine</button>
+    <iframe id="hf-iframe" src="https://onenoly11-piforge.hf.space" sandbox="allow-scripts allow-same-origin" style="display: none;"></iframe>
+    
+    <!-- Inline Pi SDK & Integration (no external loads for iPhone speed) -->
+    <script>
+        // Pi SDK (lite version for iOS)
+        window.Pi = { init: async (opts) => { /* Simulate init for demo; real: load via Pi app */ return { version: '2.0' }; }, authenticate: async (scopes) => ({ user: { username: 'iPhoneUser' } }) };
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('status').textContent = 'Pi Ready on iPhone!';
+            document.getElementById('auth-btn').style.display = 'block';
+            // Touch gesture for viz swipe
+            let touchStartX = 0;
+            document.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
+            document.addEventListener('touchend', e => {
+                const deltaX = e.changedTouches[0].clientX - touchStartX;
+                if (Math.abs(deltaX) > 50) { /* Swipe to trigger resonance */ alert('Resonance Activated! +15% Boost'); }
+            });
+        });
+
+        document.getElementById('auth-btn').addEventListener('touchstart', async (e) => {  // Touch-optimized
+            e.preventDefault();
+            try {
+                const authResult = await Pi.authenticate(['username']);
+                document.getElementById('status').textContent = `Hi, ${authResult.user.username}! Audit Loading...`;
+                document.getElementById('hf-iframe').style.display = 'block';
+                // Post to HF (iPhone-safe)
+                setTimeout(() => {
+                    const iframe = document.getElementById('hf-iframe');
+                    iframe.contentWindow.postMessage({ type: 'init_audit', user: authResult.user }, '*');
+                }, 500);
+            } catch (err) { document.getElementById('status').textContent = 'Tap Pi App to Auth'; }
+        });
+
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'ethical_audit_complete' && event.data.results.resonance >= 691) {
+                document.getElementById('status').textContent = `Score: ${event.data.results.ethical_score} | Boost: +15% Mining!`;
+                // iPhone haptic feedback (if supported)
+                if (navigator.vibrate) navigator.vibrate(200);
+            }
+        });
+    </script>
+</body>
+</html>
