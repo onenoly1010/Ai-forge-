@@ -18,7 +18,90 @@
             cursor: pointer;
         }
     </style>
-</head>
+</head><!-- Pi SDK Integration -->
+<script src="https://sdk.minepi.com/pi-sdk.js"></script>
+<script>
+// Debug logging
+console.log("🚀 PiForge SDK integration loading...");
+
+// Initialize Pi SDK
+Pi.init({ 
+    version: "2.0", 
+    sandbox: false
+});
+
+console.log("✅ Pi SDK initialized");
+
+// Make Connect Wallet button work
+function connectPiWallet() {
+    console.log("🔗 Connect button clicked");
+    Pi.authenticate(['payments', 'username']).then(function(auth) {
+        console.log("✅ Wallet connected:", auth);
+        document.body.innerHTML += `
+            <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border: 3px solid green; border-radius: 10px; z-index: 10000;">
+                <h2>✅ Wallet Connected!</h2>
+                <p>Now let's complete the deployment...</p>
+                <button onclick="testDeploymentPayment()" style="padding: 15px; background: #00f0a0; color: black; border: none; border-radius: 10px; font-size: 18px; margin: 10px;">
+                    🚀 COMPLETE DEPLOYMENT
+                </button>
+            </div>
+        `;
+    }).catch(function(error) {
+        console.error("❌ Wallet connection failed:", error);
+        alert("Error: " + error.message + "\n\nMake sure you're in Pi Browser!");
+    });
+}
+
+// Test payment function
+function testDeploymentPayment() {
+    console.log("💳 Starting test payment...");
+    Pi.createPayment({
+        amount: 0.01,
+        memo: "PiForge Deployment Test",
+        metadata: { test: true }
+    }, {
+        onReadyForServerApproval: function(paymentId) {
+            console.log("✅ Payment ready:", paymentId);
+            alert("Payment initiated! Check your Pi Wallet to approve...");
+        },
+        onReadyForServerCompletion: function(paymentId, txid) {
+            console.log("🎉 Payment completed:", paymentId, txid);
+            alert("✅ DEPLOYMENT COMPLETE! Your app is now live!");
+        },
+        onCancel: function(paymentId) {
+            console.log("❌ Payment cancelled:", paymentId);
+            alert("Payment cancelled. Please try again.");
+        },
+        onError: function(error) {
+            console.error("❌ Payment error:", error);
+            alert("Payment error: " + error.message);
+        }
+    });
+}
+
+// Wire up the button when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("📄 Page loaded, looking for Connect button...");
+    
+    // Try to find and wire up the Connect button
+    const connectBtn = document.querySelector('button');
+    if (connectBtn) {
+        console.log("🔘 Found button:", connectBtn.textContent);
+        connectBtn.onclick = connectPiWallet;
+        connectBtn.style.border = "3px solid red"; // Visual indicator
+    } else {
+        console.log("❌ No button found");
+        // Create a fallback button
+        document.body.innerHTML += `
+            <button onclick="connectPiWallet()" style="position: fixed; top: 20px; right: 20px; padding: 15px; background: red; color: white; border: none; border-radius: 10px; z-index: 9999;">
+                🔗 CONNECT PI WALLET
+            </button>
+        `;
+    }
+});
+
+console.log("🎯 PiForge integration ready!");
+</script>
 <body>
     <h1>Ai Forge</h1>
     <p>Build Ethical AI Apps on Pi Network</p>
