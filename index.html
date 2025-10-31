@@ -1,43 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ai Forge - Ethical AI App Builder</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Ai Forge</title>
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background: #00f0a0;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🤖 Ai Forge</h1>
-            <p>Build Ethical AI Apps on Pi Network</p>
-        </header>
-        
-        <div id="auth-section">
-            <button id="login-btn" class="btn-primary">Connect Pi Wallet</button>
-        </div>
-        
-        <div id="app-section" class="hidden">
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <h3>🛠️ AI App Builder</h3>
-                    <p>Create custom AI applications with ethical guidelines</p>
-                </div>
-                <div class="feature-card">
-                    <h3>🔍 Ethical Audit</h3>
-                    <p>Automated compliance checking for responsible AI</p>
-                </div>
-                <div class="feature-card">
-                    <h3>🚀 Deploy</h3>
-                    <p>Launch your AI apps on Pi Network</p>
-                </div>
-            </div>
-            
-            <button id="test-transaction" class="btn-secondary">Test Transaction</button>
-        </div>
-    </div>
+    <h1>Ai Forge</h1>
+    <p>Build Ethical AI Apps on Pi Network</p>
     
-    <script src="app.js"></script>
+    <button onclick="connectPiWallet()">Connect Pi Wallet</button>
+    
+    <div id="status"></div>
+
+    <script>
+        Pi.init({ 
+            version: "2.0", 
+            sandbox: false
+        });
+
+        function connectPiWallet() {
+            Pi.authenticate(['payments', 'username'], function(auth) {
+                document.getElementById('status').innerHTML = `
+                    <div style="color: green; margin: 20px;">
+                        ✅ Wallet Connected! Ready to test deployment transaction.
+                    </div>
+                    <button onclick="testDeploymentPayment()" style="padding: 15px; background: #00f0a0; color: black; border: none; border-radius: 10px; font-size: 18px;">
+                        🚀 COMPLETE DEPLOYMENT (Test Payment)
+                    </button>
+                `;
+            }).catch(function(error) {
+                console.error("Wallet connection failed:", error);
+                alert("Wallet connection failed. Please make sure you're in Pi Browser.");
+            });
+        }
+
+        function testDeploymentPayment() {
+            Pi.createPayment({
+                amount: 0.01,
+                memo: "PiForge Deployment Verification",
+                metadata: { 
+                    test: true,
+                    deployment: "final_step"
+                }
+            }, {
+                onReadyForServerApproval: function(paymentId) {
+                    console.log("Payment ready for approval:", paymentId);
+                    document.getElementById('status').innerHTML += `
+                        <div style="color: orange; margin: 10px;">
+                            ⚡ Payment initiated! Check your Pi Wallet to approve...
+                        </div>
+                    `;
+                },
+                onReadyForServerCompletion: function(paymentId, txid) {
+                    console.log("Payment completed!", paymentId, txid);
+                    document.getElementById('status').innerHTML += `
+                        <div style="color: green; margin: 10px; font-weight: bold;">
+                            ✅ DEPLOYMENT COMPLETE! Your app is now live!
+                        </div>
+                    `;
+                },
+                onCancel: function(paymentId) {
+                    console.log("Payment cancelled:", paymentId);
+                    alert("Payment cancelled. Please try again to complete deployment.");
+                },
+                onError: function(error, payment) {
+                    console.error("Payment error:", error);
+                    alert("Payment error: " + error.message);
+                }
+            });
+        }
+    </script>
 </body>
 </html>
