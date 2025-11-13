@@ -20,7 +20,7 @@
 
 ```bash
 # Clone repository
-git clone https://github.com/G265Dev/ai-forge
+git clone https://github.com/onenoly1010/Ai-forge-
 
 # Open index.html in browser
 # Or deploy to your web hosting
