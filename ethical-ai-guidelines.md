@@ -1,6 +1,3 @@
-
-### **File 5: ethical-ai-guidelines.md**
-```markdown
 # Ai Forge Ethical AI Guidelines
 
 ## Core Principles
