@@ -110,19 +110,19 @@ Please read our [ethical-ai-guidelines.md](ethical-ai-guidelines.md) before cont
 
 ## 🔮 Roadmap
 
-### v1.1.0 (Q1 2026)
+### v1.1.0 (3-6 months after v1.0.0)
 - Enhanced AI templates
 - More building tools
 - Usage analytics (privacy-preserving)
 - Tutorial videos
 
-### v1.2.0 (Q2 2026)
+### v1.2.0 (6-9 months after v1.0.0)
 - Developer API
 - Advanced audit features
 - Multi-language support
 - Community showcase
 
-### v2.0.0 (Q3 2026)
+### v2.0.0 (9-12 months after v1.0.0)
 - AI app marketplace
 - Mobile native app
 - Advanced governance tools
@@ -149,7 +149,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🎉 Latest Release
 
-**v1.0.0** - Initial Public Release (December 28, 2025)
+**v1.0.0** - Initial Public Release (December 2025)
 
 See [RELEASE_NOTES.md](RELEASE_NOTES.md) for full release details.
 
