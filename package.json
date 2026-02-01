@@ -1,0 +1,21 @@
+{
+  "name": "ai-forge",
+  "version": "1.0.0",
+  "description": "Ethical AI App Builder for Pi Network",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve -s . -l 3000",
+    "build": "echo 'Static site - no build required'"
+  },
+  "keywords": [
+    "pi-network",
+    "ai",
+    "ethical-ai",
+    "blockchain"
+  ],
+  "author": "onenoly1010",
+  "license": "MIT",
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+}
