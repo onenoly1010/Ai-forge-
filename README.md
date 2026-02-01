@@ -167,10 +167,13 @@ The app includes a test payment feature to demonstrate Pi Network integration:
 
 ### Building with Ai Forge
 
-1. **Create an AI App**: Use the builder interface to define your AI application
-2. **Run Ethical Audit**: Verify compliance with ethical guidelines
-3. **Test Functionality**: Ensure your app works as expected
-4. **Deploy**: Use the deployment payment feature to publish your app
+Ai Forge provides a foundation for building ethical AI applications. To create your own AI app:
+
+1. **Fork/Clone**: Start with the Ai Forge codebase as a template
+2. **Customize**: Modify `app.js` to add your AI functionality
+3. **Apply Ethics**: Follow the guidelines in `ethical-ai-guidelines.md`
+4. **Test**: Verify your app works and meets ethical standards
+5. **Deploy**: Use the Pi Network integration for authentication and payments
 
 ## 🌐 Browser Compatibility
 
