@@ -24,7 +24,7 @@ header {
 }
 
 header h1 {
-    font-size: 3em;
+    font-size: clamp(1.5em, 5vw, 3em);
     margin-bottom: 10px;
 }
 
@@ -84,8 +84,18 @@ header p {
     background: #45a049;
 }
 
+.btn-primary:focus-visible {
+    outline: 3px solid #333;
+    outline-offset: 2px;
+}
+
 .btn-secondary:hover {
     background: #e68900;
+}
+
+.btn-secondary:focus-visible {
+    outline: 3px solid #333;
+    outline-offset: 2px;
 }
 
 .hidden {
@@ -118,5 +128,27 @@ a:hover {
     
     header h1 {
         font-size: 2em;
+    }
+}
+
+/* Print styles for better printability */
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+    
+    .btn-primary, .btn-secondary {
+        display: none;
+    }
+    
+    .feature-card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+    
+    a {
+        color: #000;
+        text-decoration: underline;
     }
 }

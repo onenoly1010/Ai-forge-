@@ -1,60 +1,112 @@
 // Ai Forge - Production-ready Pi Network Integration
-// Debug logging
-console.log("🚀 Ai Forge application initializing...");
 
 // Global state
 let currentUser = null;
 
+// Environment-based logging
+const DEBUG = false; // Set to true for development
+function debugLog(...args) {
+    if (DEBUG) console.log(...args);
+}
+
 // Initialize Pi SDK
-try {
-    Pi.init({ 
-        version: "2.0", 
-        sandbox: false
-    });
-    console.log("✅ Pi SDK initialized successfully");
-} catch (error) {
-    console.error("❌ Failed to initialize Pi SDK:", error);
+if (typeof window.Pi !== 'undefined') {
+    try {
+        Pi.init({ 
+            version: "2.0", 
+            sandbox: false
+        });
+        debugLog("✅ Pi SDK initialized successfully");
+    } catch (error) {
+        console.error("❌ Failed to initialize Pi SDK:", error);
+    }
+} else {
+    console.error("❌ Pi SDK not available. Please ensure you're running in Pi Browser or have included the Pi SDK script.");
+}
+
+// Helper function to create status message safely
+function createStatusMessage(message, type, details) {
+    const statusDiv = document.getElementById('status');
+    const messageDiv = document.createElement('div');
+    messageDiv.style.cssText = `
+        margin: 20px; 
+        padding: 15px; 
+        background: ${type === 'success' ? '#e8f5e9' : type === 'error' ? '#ffebee' : '#fff3e0'}; 
+        border-radius: 10px;
+        color: ${type === 'success' ? 'green' : type === 'error' ? '#c62828' : 'orange'};
+    `;
+    
+    const messageText = document.createElement('div');
+    messageText.textContent = message;
+    messageDiv.appendChild(messageText);
+    
+    if (details) {
+        const detailsText = document.createElement('strong');
+        detailsText.textContent = details;
+        messageDiv.appendChild(document.createElement('br'));
+        messageDiv.appendChild(detailsText);
+    }
+    
+    statusDiv.appendChild(messageDiv);
 }
 
 // Connect wallet functionality
 function connectPiWallet() {
-    console.log("🔗 Connecting to Pi Wallet...");
+    debugLog("🔗 Connecting to Pi Wallet...");
+    
+    if (typeof window.Pi === 'undefined') {
+        createStatusMessage('❌ Pi SDK not available. Please use Pi Browser.', 'error');
+        return;
+    }
     
     Pi.authenticate(['payments', 'username']).then(function(auth) {
-        console.log("✅ Wallet connected successfully:", auth);
+        debugLog("✅ Wallet connected successfully:", auth);
+        
+        // Validate authentication response
+        if (!auth || !auth.user) {
+            throw new Error('Invalid authentication response');
+        }
+        
         currentUser = auth.user;
         
         // Update UI
         document.getElementById('auth-section').classList.add('hidden');
         document.getElementById('app-section').classList.remove('hidden');
         
-        // Show success message
+        // Show success message safely
         const statusDiv = document.getElementById('status');
-        statusDiv.innerHTML = `
-            <div style="color: green; margin: 20px; padding: 15px; background: #e8f5e9; border-radius: 10px;">
-                ✅ Wallet Connected!<br>
-                <strong>User:</strong> ${auth.user.username || 'Anonymous'}
-            </div>
-        `;
+        statusDiv.innerHTML = ''; // Clear previous messages
+        createStatusMessage('✅ Wallet Connected!', 'success', 'User: ' + (auth.user.username || 'Anonymous'));
         
     }).catch(function(error) {
         console.error("❌ Wallet connection failed:", error);
-        alert("Wallet connection failed: " + error.message + "\n\nPlease make sure you're using the Pi Browser.");
+        createStatusMessage('❌ Wallet connection failed: ' + (error.message || 'Unknown error'), 'error', 'Please make sure you\'re using the Pi Browser.');
     });
 }
 
 // Test payment functionality
 function testDeploymentPayment() {
-    if (!currentUser) {
-        alert('Please connect your Pi wallet first.');
+    // Validate user is connected
+    if (!currentUser || !currentUser.username) {
+        createStatusMessage('❌ Please connect your Pi wallet first.', 'error');
         return;
     }
     
-    console.log("💳 Initiating test payment...");
+    // Validate Pi SDK is available
+    if (typeof window.Pi === 'undefined') {
+        createStatusMessage('❌ Pi SDK not available.', 'error');
+        return;
+    }
+    
+    debugLog("💳 Initiating test payment...");
+    
+    // Payment configuration
+    const PAYMENT_AMOUNT = 0.01;
+    const PAYMENT_MEMO = "Ai Forge Deployment Verification";
     
     Pi.createPayment({
-        amount: 0.01,
-        memo: "Ai Forge Deployment Verification",
+        amount: PAYMENT_AMOUNT,
+        memo: PAYMENT_MEMO,
         metadata: { 
             app: "Ai Forge",
             feature: "ethical_ai_builder",
@@ -64,55 +116,45 @@ function testDeploymentPayment() {
         }
     }, {
         onReadyForServerApproval: function(paymentId) {
-            console.log("✅ Payment ready for approval:", paymentId);
-            const statusDiv = document.getElementById('status');
-            statusDiv.innerHTML += `
-                <div style="color: orange; margin: 10px; padding: 15px; background: #fff3e0; border-radius: 10px;">
-                    ⚡ Payment initiated!<br>
-                    <strong>Payment ID:</strong> ${paymentId}<br>
-                    Check your Pi Wallet to approve...
-                </div>
-            `;
+            debugLog("✅ Payment ready for approval:", paymentId);
+            createStatusMessage('⚡ Payment initiated!', 'warning', 'Payment ID: ' + paymentId + ' - Check your Pi Wallet to approve...');
         },
         onReadyForServerCompletion: function(paymentId, txid) {
-            console.log("🎉 Payment completed successfully!", paymentId, txid);
-            const statusDiv = document.getElementById('status');
-            statusDiv.innerHTML += `
-                <div style="color: green; margin: 10px; padding: 15px; background: #e8f5e9; border-radius: 10px; font-weight: bold;">
-                    ✅ DEPLOYMENT COMPLETE!<br>
-                    <strong>Transaction ID:</strong> ${txid}<br>
-                    Your app is now fully live and verified!
-                </div>
-            `;
+            debugLog("🎉 Payment completed successfully!", paymentId, txid);
+            createStatusMessage('✅ DEPLOYMENT COMPLETE!', 'success', 'Transaction ID: ' + txid + ' - Your app is now fully live and verified!');
         },
         onCancel: function(paymentId) {
-            console.log("❌ Payment cancelled by user:", paymentId);
-            alert("Payment cancelled. You can try again to complete the deployment verification.");
+            debugLog("❌ Payment cancelled by user:", paymentId);
+            createStatusMessage('Payment cancelled. You can try again to complete the deployment verification.', 'warning');
         },
         onError: function(error) {
             console.error("❌ Payment error:", error);
-            alert("Payment error: " + error.message);
+            createStatusMessage('❌ Payment error: ' + (error.message || 'Unknown error'), 'error');
         }
     });
 }
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("📄 DOM loaded, setting up event listeners...");
+    debugLog("📄 DOM loaded, setting up event listeners...");
     
     // Connect wallet button
     const connectBtn = document.getElementById('connect-wallet');
     if (connectBtn) {
         connectBtn.addEventListener('click', connectPiWallet);
-        console.log("✅ Connect wallet button ready");
+        debugLog("✅ Connect wallet button ready");
+    } else {
+        console.error("❌ Connect wallet button not found");
     }
     
     // Test payment button
     const testPaymentBtn = document.getElementById('test-payment');
     if (testPaymentBtn) {
         testPaymentBtn.addEventListener('click', testDeploymentPayment);
-        console.log("✅ Test payment button ready");
+        debugLog("✅ Test payment button ready");
+    } else {
+        console.error("❌ Test payment button not found");
     }
     
-    console.log("🎯 Ai Forge application ready!");
+    debugLog("🎯 Ai Forge application ready!");
 });

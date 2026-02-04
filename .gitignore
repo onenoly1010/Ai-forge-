@@ -1,6 +1,5 @@
 # Dependencies
 node_modules/
-package-lock.json
 
 # Build outputs
 dist/
@@ -25,3 +24,7 @@ Thumbs.db
 logs/
 *.log
 npm-debug.log*
+
+# Temporary files
+/tmp/
+*.tmp

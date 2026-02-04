@@ -3,9 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Build ethical AI applications on Pi Network with built-in compliance checking for transparency, fairness, privacy, and accountability.">
+    <meta name="keywords" content="pi network, ai, ethical ai, blockchain, app builder">
+    <meta name="author" content="onenoly1010">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Ai Forge - Ethical AI App Builder">
+    <meta property="og:description" content="Build, audit, and deploy ethical AI applications on Pi Network">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://onenoly1010.github.io/Ai-forge-/">
+    <meta property="og:site_name" content="Ai Forge">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ai Forge - Ethical AI App Builder">
+    <meta name="twitter:description" content="Build, audit, and deploy ethical AI applications on Pi Network">
+    
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://sdk.minepi.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://sdk.minepi.com https://api.minepi.com;">
+    
     <title>Ai Forge - Ethical AI App Builder</title>
     <link rel="stylesheet" href="Style.css">
-    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+    <script src="https://sdk.minepi.com/pi-sdk.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="container">
@@ -34,19 +53,19 @@
         </div>
 
         <div id="auth-section">
-            <button id="connect-wallet" class="btn-primary">Connect Pi Wallet</button>
-            <div id="status"></div>
+            <button id="connect-wallet" class="btn-primary" aria-label="Connect your Pi Network wallet">Connect Pi Wallet</button>
+            <div id="status" role="status" aria-live="polite"></div>
         </div>
 
         <div id="app-section" class="hidden">
             <h2>✅ Wallet Connected!</h2>
             <p>Ready to test deployment and payment integration.</p>
-            <button id="test-payment" class="btn-secondary">🚀 Test Deployment Payment</button>
+            <button id="test-payment" class="btn-secondary" aria-label="Test deployment payment with 0.01 Pi">🚀 Test Deployment Payment</button>
         </div>
 
         <div style="margin-top: 30px; padding: 20px; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
             <h3>📋 Resources</h3>
-            <p><a href="ethical-ai-guidelines.md" target="_blank" style="color: #667eea; text-decoration: none; font-weight: bold;">View Ethical AI Guidelines</a></p>
+            <p><a href="ethical-ai-guidelines.md" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: none; font-weight: bold;">View Ethical AI Guidelines</a></p>
             <p style="font-size: 0.9em; color: #666; margin-top: 10px;">All AI applications built with Ai Forge follow strict ethical standards for transparency, fairness, privacy, and accountability.</p>
         </div>
     </div>
