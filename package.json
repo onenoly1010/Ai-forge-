@@ -1,21 +1,38 @@
 {
   "name": "ai-forge",
   "version": "1.0.0",
-  "description": "Ethical AI App Builder for Pi Network",
+  "description": "Ethical AI App Builder for Pi Network - Build, audit, and deploy AI applications with built-in compliance checking",
   "main": "index.html",
   "scripts": {
     "start": "npx serve -s . -l 3000",
-    "build": "echo 'Static site - no build required'"
+    "build": "echo 'Static site - no build required'",
+    "lint": "echo 'No linting configured yet'",
+    "test": "echo 'No tests configured yet'"
   },
   "keywords": [
     "pi-network",
     "ai",
     "ethical-ai",
-    "blockchain"
+    "blockchain",
+    "web3",
+    "app-builder",
+    "responsible-ai"
   ],
   "author": "onenoly1010",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/onenoly1010/Ai-forge-.git"
+  },
+  "bugs": {
+    "url": "https://github.com/onenoly1010/Ai-forge-/issues"
+  },
+  "homepage": "https://onenoly1010.github.io/Ai-forge-/",
   "dependencies": {
     "serve": "^14.2.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   }
 }

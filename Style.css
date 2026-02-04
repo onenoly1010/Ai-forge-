@@ -24,7 +24,7 @@ header {
 }
 
 header h1 {
-    font-size: 3em;
+    font-size: clamp(1.5em, 5vw, 3em);
     margin-bottom: 10px;
 }
 
@@ -84,8 +84,18 @@ header p {
     background: #45a049;
 }
 
+.btn-primary:focus-visible {
+    outline: 3px solid #333;
+    outline-offset: 2px;
+}
+
 .btn-secondary:hover {
     background: #e68900;
+}
+
+.btn-secondary:focus-visible {
+    outline: 3px solid #333;
+    outline-offset: 2px;
 }
 
 .hidden {
@@ -118,5 +128,84 @@ a:hover {
     
     header h1 {
         font-size: 2em;
+    }
+}
+
+/* Status message styles */
+.status-message {
+    margin: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: normal;
+}
+
+.status-message strong {
+    display: block;
+    margin-top: 5px;
+}
+
+.status-success {
+    background: #e8f5e9;
+    color: green;
+}
+
+.status-error {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.status-warning {
+    background: #fff3e0;
+    color: orange;
+}
+
+/* Resources section */
+.resources-section {
+    margin-top: 30px;
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.resources-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.resources-link:hover {
+    opacity: 0.7;
+}
+
+.resources-description {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 10px;
+}
+
+/* Print styles for better printability */
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+    
+    .btn-primary, .btn-secondary {
+        display: none;
+    }
+    
+    .feature-card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+    
+    a {
+        color: #000;
+        text-decoration: underline;
+    }
+    
+    .status-message {
+        border: 1px solid #ccc;
     }
 }
