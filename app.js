@@ -28,13 +28,7 @@ if (typeof window.Pi !== 'undefined') {
 function createStatusMessage(message, type, details) {
     const statusDiv = document.getElementById('status');
     const messageDiv = document.createElement('div');
-    messageDiv.style.cssText = `
-        margin: 20px; 
-        padding: 15px; 
-        background: ${type === 'success' ? '#e8f5e9' : type === 'error' ? '#ffebee' : '#fff3e0'}; 
-        border-radius: 10px;
-        color: ${type === 'success' ? 'green' : type === 'error' ? '#c62828' : 'orange'};
-    `;
+    messageDiv.className = 'status-message status-' + type;
     
     const messageText = document.createElement('div');
     messageText.textContent = message;
@@ -43,7 +37,6 @@ function createStatusMessage(message, type, details) {
     if (details) {
         const detailsText = document.createElement('strong');
         detailsText.textContent = details;
-        messageDiv.appendChild(document.createElement('br'));
         messageDiv.appendChild(detailsText);
     }
     
@@ -64,7 +57,7 @@ function connectPiWallet() {
         
         // Validate authentication response
         if (!auth || !auth.user) {
-            throw new Error('Invalid authentication response');
+            throw new Error('Authentication failed: Unable to retrieve user information from Pi Network. Please try again or contact support if the issue persists.');
         }
         
         currentUser = auth.user;
