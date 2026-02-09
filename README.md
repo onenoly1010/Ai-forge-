@@ -1,5 +1,7 @@
 # 🤖 Ai Forge - Ethical AI App Builder
 
+[![CI Pipeline](https://github.com/onenoly1010/Ai-forge-/actions/workflows/ci.yml/badge.svg)](https://github.com/onenoly1010/Ai-forge-/actions/workflows/ci.yml)
+[![Deploy](https://github.com/onenoly1010/Ai-forge-/actions/workflows/deploy.yml/badge.svg)](https://github.com/onenoly1010/Ai-forge-/actions/workflows/deploy.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](https://github.com/onenoly1010/Ai-forge-/releases)
 [![Pi Network](https://img.shields.io/badge/Pi%20Network-Integrated-purple.svg)](https://minepi.com/)
@@ -140,6 +142,7 @@ Test the Pi Network payment flow with a demonstration 0.01 Pi transaction to see
 
 ## 📚 Documentation
 
+- **[CI_CD_INFRASTRUCTURE.md](CI_CD_INFRASTRUCTURE.md)** - CI/CD pipeline and workflow documentation
 - **[LAUNCH_MANIFEST.md](LAUNCH_MANIFEST.md)** - Complete launch and operations guide
 - **[RELEASE_NOTES.md](RELEASE_NOTES.md)** - v1.0.0 release details
 - **[RELEASE_GUIDE.md](RELEASE_GUIDE.md)** - GitHub release creation guide
