@@ -142,6 +142,7 @@ Test the Pi Network payment flow with a demonstration 0.01 Pi transaction to see
 
 ## 📚 Documentation
 
+- **[CI_CD_INFRASTRUCTURE.md](CI_CD_INFRASTRUCTURE.md)** - CI/CD pipeline and workflow documentation
 - **[LAUNCH_MANIFEST.md](LAUNCH_MANIFEST.md)** - Complete launch and operations guide
 - **[RELEASE_NOTES.md](RELEASE_NOTES.md)** - v1.0.0 release details
 - **[RELEASE_GUIDE.md](RELEASE_GUIDE.md)** - GitHub release creation guide
