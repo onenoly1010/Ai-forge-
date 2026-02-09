@@ -1,0 +1,194 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main, develop, 'copilot/**' ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: 🔍 Lint Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Check HTML validity
+        run: |
+          npm install -g html-validate
+          html-validate index.html || true
+
+  build:
+    name: 🔧 Build & Validate
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Validate package.json
+        run: npm run validate || echo "Validation not configured"
+
+      - name: Check file structure
+        run: |
+          echo "Checking required files..."
+          test -f index.html && echo "✓ index.html exists"
+          test -f app.js && echo "✓ app.js exists"
+          test -f Style.css && echo "✓ Style.css exists"
+          test -f package.json && echo "✓ package.json exists"
+
+  test:
+    name: 🧪 Run Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Run integration tests
+        run: npm run test:integration || echo "Integration tests not configured"
+        continue-on-error: true
+
+  security:
+    name: 🔒 Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate || true
+
+      - name: Check for secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+
+  validate-deployment:
+    name: ✅ Validate Deployment Config
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate Railway config
+        run: |
+          if [ -f railway.toml ]; then
+            echo "✓ Railway configuration found"
+            cat railway.toml
+          fi
+
+      - name: Validate package.json
+        run: |
+          node -e "const pkg = require('./package.json'); console.log('Package:', pkg.name, pkg.version);"
+
+  status-report:
+    name: 📊 CI Status Report
+    runs-on: ubuntu-latest
+    needs: [lint, build, test, security, validate-deployment]
+    if: always()
+    steps:
+      - name: Generate status report
+        run: |
+          echo "# CI Pipeline Status Report"
+          echo ""
+          echo "**Workflow**: ${{ github.workflow }}"
+          echo "**Run Number**: ${{ github.run_number }}"
+          echo "**Trigger**: ${{ github.event_name }}"
+          echo "**Branch**: ${{ github.ref_name }}"
+          echo "**Commit**: ${{ github.sha }}"
+          echo ""
+          echo "## Job Results"
+          echo "- Lint: ${{ needs.lint.result }}"
+          echo "- Build: ${{ needs.build.result }}"
+          echo "- Test: ${{ needs.test.result }}"
+          echo "- Security: ${{ needs.security.result }}"
+          echo "- Validate Deployment: ${{ needs.validate-deployment.result }}"
+          echo ""
+          echo "**Overall Status**: ${{ job.status }}"
+
+      - name: Post status to PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        continue-on-error: true
+        with:
+          script: |
+            const statusEmoji = {
+              'success': '✅',
+              'failure': '❌',
+              'cancelled': '⏭️',
+              'skipped': '⏭️'
+            };
+            
+            const jobs = {
+              'Lint': '${{ needs.lint.result }}',
+              'Build': '${{ needs.build.result }}',
+              'Test': '${{ needs.test.result }}',
+              'Security': '${{ needs.security.result }}',
+              'Validate Deployment': '${{ needs.validate-deployment.result }}'
+            };
+            
+            let body = '## 🤖 CI Pipeline Report\n\n';
+            body += '| Job | Status |\n';
+            body += '|-----|--------|\n';
+            
+            for (const [job, result] of Object.entries(jobs)) {
+              const emoji = statusEmoji[result] || '❓';
+              body += `| ${job} | ${emoji} ${result} |\n`;
+            }
+            
+            body += `\n**Workflow Run**: [#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });

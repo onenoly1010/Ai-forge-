@@ -1,5 +1,7 @@
 # 🤖 Ai Forge - Ethical AI App Builder
 
+[![CI Pipeline](https://github.com/onenoly1010/Ai-forge-/actions/workflows/ci.yml/badge.svg)](https://github.com/onenoly1010/Ai-forge-/actions/workflows/ci.yml)
+[![Deploy](https://github.com/onenoly1010/Ai-forge-/actions/workflows/deploy.yml/badge.svg)](https://github.com/onenoly1010/Ai-forge-/actions/workflows/deploy.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](https://github.com/onenoly1010/Ai-forge-/releases)
 [![Pi Network](https://img.shields.io/badge/Pi%20Network-Integrated-purple.svg)](https://minepi.com/)
