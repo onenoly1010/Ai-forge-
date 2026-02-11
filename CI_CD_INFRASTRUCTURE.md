@@ -252,6 +252,17 @@ npm audit fix
 
 ### Deployment Failures
 
+**Issue: GitHub Pages deployment workflow fails immediately**
+
+This is the most common issue. The workflow requires GitHub Pages to be configured with "GitHub Actions" as the deployment source.
+
+**Solution**: See [GITHUB_PAGES_SETUP.md](GITHUB_PAGES_SETUP.md) for detailed setup instructions.
+
+Quick fix:
+1. Go to Repository Settings → Pages
+2. Under "Build and deployment", set Source to "GitHub Actions"
+3. Re-run the workflow
+
 **Issue: GitHub Pages not updating**
 1. Check workflow run logs
 2. Verify Pages is enabled in repository settings

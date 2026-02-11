@@ -3,11 +3,29 @@
 ## Quick Deploy Options
 
 ### Option 1: GitHub Pages (Recommended)
+
+**Automatic Deployment with GitHub Actions:**
+
+This repository includes automated deployment via GitHub Actions. To enable it:
+
+1. Go to repository **Settings** → **Pages**
+2. Under "Build and deployment":
+   - **Source**: Select "GitHub Actions" (NOT "Deploy from a branch")
+3. Commit any change to the `main` branch (or manually trigger the workflow)
+4. Your site will automatically deploy to: `https://onenoly1010.github.io/Ai-forge-/`
+
+**Manual Setup (Alternative):**
+
+If you prefer manual deployment without Actions:
+
 1. Go to repository Settings → Pages
-2. Select branch: `main` (or your preferred branch)
-3. Select folder: `/ (root)`
-4. Click Save
-5. Your site will be live at: `https://onenoly1010.github.io/Ai-forge-/`
+2. Select **Source**: "Deploy from a branch"
+3. Select branch: `main` (or your preferred branch)
+4. Select folder: `/ (root)`
+5. Click Save
+6. Your site will be live at: `https://onenoly1010.github.io/Ai-forge-/`
+
+**Note**: The GitHub Actions deployment (`.github/workflows/deploy.yml`) requires "GitHub Actions" to be selected as the source. If you see deployment failures, verify this setting.
 
 ### Option 2: Netlify
 1. Connect your GitHub repository to Netlify

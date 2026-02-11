@@ -1,3 +1,15 @@
+# Deploy to GitHub Pages
+#
+# IMPORTANT: This workflow requires GitHub Pages to be configured with 
+# "GitHub Actions" as the deployment source.
+#
+# Setup Instructions:
+# 1. Go to Repository Settings → Pages
+# 2. Under "Build and deployment", set Source to "GitHub Actions"
+# 3. See GITHUB_PAGES_SETUP.md for detailed setup guide
+#
+# If this workflow fails, it's likely because Pages is not configured correctly.
+
 name: Deploy to GitHub Pages
 
 on:
