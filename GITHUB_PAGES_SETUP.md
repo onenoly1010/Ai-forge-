@@ -80,7 +80,7 @@ Either delete or disable `.github/workflows/deploy.yml`
 - ✅ Simpler setup
 - ✅ Automatic on every push
 - ❌ No build validation
-- ❌ Deploys everything in the branch (including .gitignore'd files if committed)
+- ❌ Deploys everything in the branch (including `.gitignore`d files if committed)
 
 ## Troubleshooting
 
