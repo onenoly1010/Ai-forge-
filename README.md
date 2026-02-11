@@ -91,6 +91,8 @@ Note: Pi SDK features require the Pi Browser or sandbox mode for full functional
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment options (GitHub Pages, Netlify, Vercel, etc.)
 
+**📌 Note**: If the GitHub Pages deployment workflow is failing, see [GITHUB_PAGES_SETUP.md](GITHUB_PAGES_SETUP.md) for setup instructions.
+
 ## 📋 What's Included
 
 - ✅ Production-ready web application
