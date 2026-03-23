@@ -33,7 +33,7 @@
   },
   "homepage": "https://onenoly1010.github.io/Ai-forge-/",
   "dependencies": {
-    "serve": "^14.2.1"
+    "serve": "^14.2.6"
   },
   "devDependencies": {
     "eslint": "^8.57.0"
